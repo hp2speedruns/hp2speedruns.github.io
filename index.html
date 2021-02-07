@@ -5,12 +5,11 @@
     <title>HuniePop 2 Speedrun Leaderboards</title>
     <script>
     //regex for manual time entry: ^(([0-9]?[0-9]):)?([0-5]?[0-9]):([0-5]?[0-9])(.[0-9]?[0-9]?[0-9])?$
-
-    // hardcoded; does it have to be?
-    //var CATEGORIES = ["Get Laid Easy", "Get Laid Normal", "Get Laid Hard", "Any%", "100%"];
+	
     var CATEGORIES = [];
     var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "Verified"]
-
+	var runs;
+	
     class CategoryObject {
       constructor(btn, div, table) {
       this.btn = btn;
@@ -26,6 +25,7 @@
       }
 
       add(run) {
+		//only one run displayed per username per category
 		if (this.foundNames.get(run["Username"].toLowerCase())) return;
 		this.foundNames.set(run["Username"].toLowerCase(),true);
 		
@@ -41,9 +41,10 @@
         formatRun(run, this.placeInt);
 
         let tr = this.table.insertRow();
+		tr.className = "place"+this.placeInt;
         for (let field of FIELDSTODISPLAY) {
           let td = tr.insertCell();
-          td.innerHTML = run[field];
+          td.textContent = run[field];
         }
         // hover comment
         tr.title = run["Comments"];
@@ -69,16 +70,14 @@
       fetch('https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/2/public/full?alt=json')
           .then(res => res.json())
           .then(function(data) {
-            console.log(data);
             parseCategories(data);
             makeTables();
             switchTab(CATEGORIES[0]);
             
-            
             fetch('https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/1/public/full?alt=json')
               .then(res => res.json())
               .then(function(data) {
-            let runs = parseRuns(data);
+            runs = parseRuns(data);
             // sort all runs of all categories by Time, we worry about filtering by category later
             runs = runs.sort(sortRuns);
             populateTables(runs);
@@ -102,7 +101,7 @@
       for (let category of CATEGORIES) {
         // button
         let btn = document.createElement('button');
-        btn.innerHTML = category;
+        btn.textContent = category;
         btn.onclick = function() {
           switchTab(category);
         };
@@ -115,7 +114,7 @@
         //submit run button
         let submitButton = document.createElement('button');
         submitButton.className = 'submit';
-        submitButton.innerHTML = "Submit Run";
+        submitButton.textContent = "Submit Run";
         submitButton.onclick = function() {
           d = new Date();
           function pad(number) {
@@ -124,18 +123,15 @@
             }
             return number;
           }
-          dateString = d.getFullYear() + "-" + pad(d.getMonth()) + "-" + pad(d.getDate());
+          dateString = d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
           window.location.href="https://docs.google.com/forms/d/e/1FAIpQLSfU2xUfo-qPqPRDmk4L1iIjdq28d03KJmSj1h3bWPtqHGwMBw/viewform?usp=pp_url&entry.1212348438=" + prefillCategory(category) + "&entry.958412694=" + dateString;
         };
         div.appendChild(submitButton);
 
         // category name
         let catName = document.createElement('h2');
-        catName.innerHTML = category;
-        //catName.innerHTML += "<br><a href='https://docs.google.com/forms/d/e/1FAIpQLSfU2xUfo-qPqPRDmk4L1iIjdq28d03KJmSj1h3bWPtqHGwMBw/viewform?usp=pp_url&entry.1212348438=" + prefillCategory(category) + "'>Submit Run</a>";
+        catName.textContent = category;
         div.appendChild(catName);
-        
-        
 
         // table and header row
         let tbl = document.createElement('table');
@@ -144,7 +140,7 @@
         let tr = tbl.insertRow();
         for (let field of FIELDSTODISPLAY) {
           let th = document.createElement('th');
-          th.innerHTML = field;
+          th.textContent = field;
           tr.appendChild(th);
         }
 
@@ -174,6 +170,7 @@
           fields[entry.gs$cell.col] = entry.gs$cell.inputValue;
           continue;
         }
+		console.log(fields);
 
         // short names
         row = entry.gs$cell.row;
@@ -187,7 +184,7 @@
           runs[row-2] = {};
           for (let field of fields) {
             // prefill all the fields, because some are optional but shouldn't be undefined
-            runs[row-2][field] = "";
+            if (field != undefined) runs[row-2][field] = "";
           }
         }
 
@@ -240,6 +237,11 @@
 	function prefillCategory(catName) {
       return catName.replace("%","%25").replace(" ","+");
     }
+	
+	//not necessary?
+	function preventScripts(s) {
+		return s.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
+	}
     </script>
     <style>
       :root {
@@ -277,7 +279,7 @@
 
         min-width: 30em;
 
-        background-image: url('hp2bg.jpg');
+        background-image: url('hp1beach.jpg');
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover;
@@ -338,7 +340,7 @@
         text-align: center;
         
         background-color: var(--base-color);
-        padding: 1em;
+        padding: 0.75em;
         border: none;
         outline: none;
 
@@ -346,7 +348,7 @@
       }
       
       .submit {
-        font-size: 20px;
+        font-size: 1.2em;
         border-radius: 8px;
         background-color: var(--button-unselected);
         padding: 0.25em;
@@ -392,6 +394,10 @@
 		
 		font-family: HPText;
       }
+	  
+	  .place1 { color:#ffff99; }
+	  .place2 { color:#cccccc; }
+	  .place3 { color:#ffb366; }
 
       tr:nth-child(odd) {
         /* this is intentional: there's an off-by-one caused by the header */
@@ -413,7 +419,7 @@
     </style>
   </head>
   <body>
-    <div id="header-div"><h1>HuniePop 2 Speedrun Leaderboards</h1></div>
+    <div id="header-div"><h1>HuniePop 2<br>Speedrun Leaderboards</h1></div>
     <div id="main-container">
       <div id="button-div"></div>
     </div>
