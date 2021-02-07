@@ -5,9 +5,10 @@
     <title>HuniePop 2 Speedrun Leaderboards</title>
     <script>
     //regex for manual time entry: ^(([0-9]?[0-9]):)?([0-5]?[0-9]):([0-5]?[0-9])(.[0-9]?[0-9]?[0-9])?$
+	//regex for video link (turns out there's a data validation for links): ^.*[a-zA-Z0-9]\.[a-zA-Z].*$
 	
     var CATEGORIES = [];
-    var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "Verified"]
+    var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "Video", "Verified"]
 	var runs;
 	
     class CategoryObject {
@@ -44,7 +45,20 @@
 		tr.className = "place"+this.placeInt;
         for (let field of FIELDSTODISPLAY) {
           let td = tr.insertCell();
+		  //Video field has special rules to make the link
+		  if (field === "Video" && run[field] === "Yes") {
+			var a = document.createElement('a');
+			a.textContent = run[field];
+			a.title = run["Video link"];
+			a.href = run["Video link"];
+			a.target = "_blank";
+			td.appendChild(a);
+			}
+			//everything else can just fill itself with a string
+		else {
           td.textContent = run[field];
+		  }
+		  
         }
         // hover comment
         tr.title = run["Comments"];
@@ -203,6 +217,15 @@
         // no Verified value = No
         if (run["Verified"] === "")
           run["Verified"] = "No";
+		  
+		// no Video link = No
+        if (run["Video link"] === "")
+          run["Video"] = "No";
+		else {
+			run["Video"] = "Yes";
+			//theURL = new URL(run["Video link"]);
+			//run["Video"] = theURL.hostname;
+		}
 
         // reformat the Time
         run["Time"] = reformatTime2(run["Time"]);
@@ -320,7 +343,7 @@
         background-color: var(--base-color);
 
         width: 70%;
-        max-width: 50em;
+        max-width: 60em;
         min-width: 30em;
 		
 		font-family: HPBold;
@@ -346,6 +369,14 @@
         flex: 1 1 auto;
       }
       
+	  a {
+		color: inherit;
+	  }
+	  a:hover {
+	  transition: color 0.5s;
+		color: white;
+	  }
+	  
       .submit {
         font-size: 1.2em;
         border-radius: 8px;
