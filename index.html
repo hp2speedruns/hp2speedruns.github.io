@@ -141,13 +141,17 @@
 	}
 	
 	function createDropdown(div,run) {
-		let embedLink = embedCheck(run["Proof link"]);
+		let link = run["Proof link"];
+		let embedLink = embedCheck(link);
 
 		if (embedLink !== "") {
 		div.innerHTML = '<iframe width="75%" height="400" src="' + embedLink + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
 		}
+		else if (URLisImage(link)) {
+			div.innerHTML = '<img width="75%" height="400" src="' + link + '">';
+		}
 		else {
-			if (run["Proof link"] !== "") div.innerHTML = run["Proof link"];
+			if (link !== "") div.innerHTML = link;
 			else div.innerHTML = "No proof";
 		}
 		div.innerHTML += "<br>" + run["Comments"];
@@ -333,6 +337,21 @@
 	function preventScripts(s) {
 		return s.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
 	}
+	function URLisImage(uri) {
+		//make sure we remove any nasty GET params 
+		uri = uri.split('?')[0];
+		//moving on, split the uri into parts that had dots before them
+		var parts = uri.split('.');
+		//get the last part ( should be the extension )
+		var extension = parts[parts.length-1];
+		//define some image types to test against
+		var imageTypes = ['jpg','jpeg','png','gif','webp'];
+		//check if the extension matches anything in the list.
+		if(imageTypes.indexOf(extension) !== -1) {
+			return true;   
+		}
+		return false;
+	}
     </script>
     <style>
       :root {
@@ -444,6 +463,10 @@
 	  a:hover {
 	  transition: color 0.5s;
 		color: white;
+	  }
+	  
+	  img {
+		object-fit: scale-down;	  
 	  }
 	  
       .submit {
