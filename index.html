@@ -8,7 +8,7 @@
 	//regex for video link (turns out there's a data validation for links): ^.*[a-zA-Z0-9]\.[a-zA-Z].*$
 	
     var CATEGORIES = [];
-    var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "Video", "Verified"]
+    var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "Proof", "Verified"]
 	var runs;
 	
     class CategoryObject {
@@ -141,14 +141,14 @@
 	}
 	
 	function createDropdown(div,run) {
-		let embedLink = embedCheck(run["Video link"]);
+		let embedLink = embedCheck(run["Proof link"]);
 
 		if (embedLink !== "") {
 		div.innerHTML = '<iframe width="75%" height="400" src="' + embedLink + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
 		}
 		else {
-			if (run["Video link"] !== "") div.innerHTML = run["Video link"];
-			else div.innerHTML = "No video";
+			if (run["Proof link"] !== "") div.innerHTML = run["Proof link"];
+			else div.innerHTML = "No proof";
 		}
 		div.innerHTML += "<br>" + run["Comments"];
 		
@@ -287,13 +287,13 @@
         if (run["Verified"] === "")
           run["Verified"] = "No";
 		  
-		// no Video link = No
-        if (run["Video link"] === "")
-          run["Video"] = "No";
+		// no Proof link = No
+        if (run["Proof link"] === "")
+          run["Proof"] = "No";
 		else {
-			run["Video"] = "Yes";
-			//theURL = new URL(run["Video link"]);
-			//run["Video"] = theURL.hostname;
+			run["Proof"] = "Yes";
+			//theURL = new URL(run["Proof link"]);
+			//run["Proof"] = theURL.hostname;
 		}
 
         // reformat the Time
