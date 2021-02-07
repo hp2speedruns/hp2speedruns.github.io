@@ -1,0 +1,203 @@
+:root {
+  --base-color: #07ae;
+
+  --button-selected: #0000;
+  --button-unselected: #0004;
+  --button-hover: #fff2;
+
+  --table-header-color: #1118;
+  --table-odd-color: #3456;
+  --table-even-color: #1236;
+  --table-hover-color: #aaa6;
+}
+
+@font-face {
+  font-family: HPTitle;
+  src: url('res/BerkshireSwash-Regular.ttf');
+}
+
+@font-face {
+  font-family: HPBold;
+  src: url('res/Exo-Bold.ttf');
+}
+
+@font-face {
+  font-family: HPText;
+  src: url('res/Exo-Medium.ttf');
+}
+
+body {
+  margin: auto;
+  padding: 3em;
+  align: center;
+
+  min-width: 30em;
+
+  background-image: url('res/hp1beach.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+
+  color: white;
+  font-family: helvetica;
+  text-align: center;
+}
+
+h1 {
+  font-size: 1.8em;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.5em;
+  margin-top: 0px;
+}
+
+#header-div {
+  margin: auto;
+
+  padding: 0.25em;
+  background-color: var(--base-color);
+  border-radius: 15px;
+
+  width: 40%;
+  max-width: 30em;
+  min-width: 15em;
+
+  font-family: HPTitle;
+}
+
+#main-container {
+  margin: auto;
+  margin-top: 3em;
+
+  border-radius: 10px;
+  background-color: var(--base-color);
+
+  width: 70%;
+  max-width: 60em;
+  min-width: 40em;
+
+  font-family: HPBold;
+}
+
+#button-div {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2em;
+}
+
+button {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: center;
+
+  background-color: var(--base-color);
+  padding: 0.75em;
+  border: none;
+  outline: none;
+
+  flex: 1 1 auto;
+}
+
+a {
+  color: inherit;
+}
+
+a:hover {
+transition: color 0.5s;
+  color: white;
+}
+
+img {
+  object-fit: scale-down;      
+}
+
+.submit {
+  font-size: 1.2em;
+  border-radius: 8px;
+  background-color: var(--button-unselected);
+  padding: 0.25em;
+
+  position: absolute;
+  right: 10px;
+}
+
+.submit:hover {
+  cursor: pointer;
+  background-color: var(--button-hover);
+}
+
+.button-selected {
+  background-color: var(--button-selected);
+}
+
+.button-unselected {
+  background-color: var(--button-unselected);
+}
+
+.button-unselected:hover {
+  cursor: pointer;
+  background-color: var(--button-hover);
+}
+
+.category-div {
+  padding: 15px 0px;
+  position: relative;
+}
+
+.no-display {
+  display: none;
+}
+
+table {
+  width: 100%;
+  border-style: none;
+  border-collapse: collapse;
+}
+
+tr {
+  line-height: 2em;
+  
+  font-family: HPText;
+}
+
+.place1 { color:#ffff99; }
+.place2 { color:#cccccc; }
+.place3 { color:#ffb366; }
+
+tr:nth-child(4n+4) {
+  /* this is intentional: there's an off-by-one caused by the header */
+  background-color: var(--table-even-color);
+}
+
+tr:nth-child(4n+2) {
+  /* this is intentional: there's an off-by-one caused by the header */
+  background-color: var(--table-odd-color);
+}
+
+tr:nth-child(1) {
+  background-color: var(--table-header-color);
+}
+
+tr:nth-child(2n+2):hover {
+  background-color: var(--table-hover-color);
+  cursor: pointer;
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: var(--base-color);
+}
+
+.divtr {
+  max-height: 0;
+  transition: max-height 0.2s ease-out;
+  padding: 0px;
+  margin: 0px;
+  height: 0%;
+}
