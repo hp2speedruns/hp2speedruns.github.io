@@ -163,19 +163,18 @@
       let runs = [];
 
       let currentRow = 0;
-
+		console.log(data);
       for (let entry of entries) {
         // fill out the fields array from row 1 of the sheet
         if (entry.gs$cell.row == 1) {
           fields[entry.gs$cell.col] = entry.gs$cell.inputValue;
           continue;
         }
-		console.log(fields);
 
         // short names
         row = entry.gs$cell.row;
         col = entry.gs$cell.col;
-        input = entry.gs$cell.inputValue;
+        input = entry.gs$cell.$t;
         num = entry.gs$cell.numericValue;
 
         // new row = new run
