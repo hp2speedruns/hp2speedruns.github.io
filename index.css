@@ -106,7 +106,7 @@ a {
 }
 
 a:hover {
-transition: color 0.5s;
+  transition: color 0.5s;
   color: white;
 }
 
@@ -159,8 +159,18 @@ table {
 
 tr {
   line-height: 2em;
-  
   font-family: HPText;
+}
+
+td {
+  max-width: 20em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.comment {
+  word-wrap: break-word;
+  max-height: 50em;
 }
 
 .place1 { color:#ffff99; }
