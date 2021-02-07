@@ -164,8 +164,9 @@
 		}
 		//test for google drive
 		ytAttempt = runLink.split("/file/d/");
+		if (ytAttempt.length == 1) ytAttempt = runLink.split("open?id=");
 		if (ytAttempt.length > 1) {
-			//drive link should now be IDididiiddidd/etc, chop off etc.
+			//drive link could be IDididiiddidd/etc, chop off the etc.
 			ytAttempt = ytAttempt[1].split("/");
 			return ("https://drive.google.com/file/d/" + ytAttempt[0] + "/preview");
 		}
