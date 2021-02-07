@@ -46,19 +46,8 @@
 		
         for (let field of FIELDSTODISPLAY) {
           let td = tr.insertCell();
-		  //Video field has special rules to make the link
-		  if (field === "Video" && run[field] === "Yes") {
-			var a = document.createElement('a');
-			a.textContent = run[field];
-			a.title = run["Video link"];
-			a.href = run["Video link"];
-			a.target = "_blank";
-			td.appendChild(a);
-			}
-			//everything else can just fill itself with a string
-		else {
           td.textContent = run[field];
-		  }
+
 		  
         }
 		//dropdown collapsible content. put it in its own tr/td
@@ -111,17 +100,31 @@
     }
 
     var categoryObjs = new Map();
-
+	
     // check the JSON out in console to learn its structure
     window.onload = function() {
-      fetch('https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/2/public/full?alt=json')
+      fetchCats(1);
+    }
+	
+	function fetchCats(tries) {
+		fetch('https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/2/public/full?alt=json')
           .then(res => res.json())
           .then(function(data) {
             parseCategories(data);
             makeTables();
             switchTab(CATEGORIES[0]);
             
-            fetch('https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/1/public/full?alt=json')
+			fetchRuns(1);
+            
+      })
+	  .catch(error => {
+	  console.log("refetching cats");
+	  if (tries < 10) fetchCats(tries+1);
+	  else document.getElementById("header-div").textContent = "Unable to retrieve the Google Sheets file";
+	  });
+	}
+	function fetchRuns(tries) {
+		fetch('https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/1/public/full?alt=json')
               .then(res => res.json())
 			  
               .then(function(data) {
@@ -130,20 +133,11 @@
             runs = runs.sort(sortRuns);
             populateTables(runs);
           })
-		  .catch(error => location.reload());
-      })
-	  .catch(error => location.reload());
-	  
-      
-
-      
-
-    }
-	
-	function fetchCats() {
-		
-	}
-	function fetchRuns() {
+		  .catch(error => {
+		  console.log("refetching runs");
+		  if (tries < 10) fetchRuns(tries+1);
+		  else document.getElementById("header-div").textContent = "Unable to retrieve the Google Sheets file";
+		  });
 	}
 	
 	function createDropdown(div,run) {
@@ -519,6 +513,7 @@
 
       tr:nth-child(2n+2):hover {
         background-color: var(--table-hover-color);
+		cursor: pointer;
       }
 
 		.content {
