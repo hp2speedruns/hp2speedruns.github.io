@@ -43,6 +43,7 @@
 
         let tr = this.table.insertRow();
 		tr.className = "place"+this.placeInt;
+		
         for (let field of FIELDSTODISPLAY) {
           let td = tr.insertCell();
 		  //Video field has special rules to make the link
@@ -60,6 +61,38 @@
 		  }
 		  
         }
+		//dropdown collapsible content. put it in its own tr/td
+		let divtr = this.table.insertRow(); divtr.className = "divtr";
+		let divtd = divtr.insertCell(); divtd.className = "divtr"; divtd.colSpan = "999";
+		let div = document.createElement('div');
+		div.innerHTML = "yes<br>yes<br>yes<br>yes<br>yes<br>yes<br>yes<br>";
+		div.className = "content";
+		divtd.appendChild(div);
+		
+		tr.onclick = function(){
+			if (div.style.maxHeight){
+				//slide back up
+			  div.style.maxHeight = null;
+				//we don't want the embeds staying in existence
+			  div.ontransitionend = function() { div.innerHTML = ""; }
+			} else {
+				//slide it out, fill the div with its text
+				createDropdown(div,run);
+				div.style.maxHeight = div.scrollHeight + "px";
+				
+				//we don't want the newly slid out thing to be off the bottom of the screen
+				div.ontransitionend = function() {
+				let bottompx = div.getBoundingClientRect().top + div.scrollHeight;
+				if (bottompx > window.innerHeight)
+					window.scrollBy({ 
+					  top: bottompx-window.innerHeight+25,
+					  left: 0, 
+					  behavior: 'smooth' 
+					});
+				}
+			} 
+		}
+		
         // hover comment
         tr.title = run["Comments"];
       }
@@ -90,19 +123,61 @@
             
             fetch('https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/1/public/full?alt=json')
               .then(res => res.json())
+			  
               .then(function(data) {
             runs = parseRuns(data);
             // sort all runs of all categories by Time, we worry about filtering by category later
             runs = runs.sort(sortRuns);
             populateTables(runs);
-          });
-      });
+          })
+		  .catch(error => location.reload());
+      })
+	  .catch(error => location.reload());
+	  
       
 
       
 
     }
+	
+	function fetchCats() {
+		
+	}
+	function fetchRuns() {
+	}
+	
+	function createDropdown(div,run) {
+		let embedLink = embedCheck(run["Video link"]);
 
+		if (embedLink !== "") {
+		div.innerHTML = '<iframe width="75%" height="400" src="' + embedLink + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+		}
+		else {
+			if (run["Video link"] !== "") div.innerHTML = run["Video link"];
+			else div.innerHTML = "No video";
+		}
+		div.innerHTML += "<br>" + run["Comments"];
+		
+	}
+	
+	function embedCheck(runLink) {
+		//test for youtu.be and youtube.com
+		let ytAttempt = runLink.split("youtu.be/");
+		if (ytAttempt.length == 1) ytAttempt = runLink.split("watch?v=");
+		if (ytAttempt.length > 1) {
+			//extra variables after the ID seem to be fine
+			return ("https://www.youtube.com/embed/" + ytAttempt[1]);
+		}
+		//test for google drive
+		ytAttempt = runLink.split("/file/d/");
+		if (ytAttempt.length > 1) {
+			//drive link should now be IDididiiddidd/etc, chop off etc.
+			ytAttempt = ytAttempt[1].split("/");
+			return ("https://drive.google.com/file/d/" + ytAttempt[0] + "/preview");
+		}
+		return "";
+	}
+	
     function switchTab(category) {
       for (let categoryObj of categoryObjs) {
         categoryObj[1].setEnabled(categoryObj[0] == category);
@@ -177,7 +252,6 @@
       let runs = [];
 
       let currentRow = 0;
-		console.log(data);
       for (let entry of entries) {
         // fill out the fields array from row 1 of the sheet
         if (entry.gs$cell.row == 1) {
@@ -429,12 +503,12 @@
 	  .place2 { color:#cccccc; }
 	  .place3 { color:#ffb366; }
 
-      tr:nth-child(odd) {
+      tr:nth-child(4n+4) {
         /* this is intentional: there's an off-by-one caused by the header */
         background-color: var(--table-even-color);
       }
 
-      tr:nth-child(even) {
+      tr:nth-child(4n+2) {
         /* this is intentional: there's an off-by-one caused by the header */
         background-color: var(--table-odd-color);
       }
@@ -443,9 +517,25 @@
         background-color: var(--table-header-color);
       }
 
-      tr:nth-child(n+2):hover {
+      tr:nth-child(2n+2):hover {
         background-color: var(--table-hover-color);
       }
+
+		.content {
+		  padding: 0 18px;
+		  max-height: 0;
+		  overflow: hidden;
+		  transition: max-height 0.2s ease-out;
+		  background-color: --base-color;
+		}
+		
+		.divtr {
+			max-height: 0;
+			transition: max-height 0.2s ease-out;
+            padding: 0px;
+			margin: 0px;
+			height: 0%;
+		}
     </style>
   </head>
   <body>
