@@ -6,6 +6,9 @@ var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "Proof", "Verified"]
 var categoryObjs = new Map();
 var runs;
 
+var EMBEDWIDTH = "75%";
+var EMBEDHEIGHT = "500";
+
 class CategoryObject {
   constructor(btn, div, table) {
     this.btn = btn;
@@ -143,9 +146,11 @@ function createDropdown(div,run) {
   let embedLink = embedCheck(link);
 
   if (embedLink !== "") {
-    div.innerHTML = '<iframe width="75%" height="400" src="' + embedLink + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+    div.innerHTML = '<iframe width="' + EMBEDWIDTH + '" height="' + EMBEDHEIGHT + '" src="' + embedLink + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+	div.innerHTML += '<p class="underembed">(<a href="' + link + '">' + link + '</a>)</p>';
   } else if (URLisImage(link)) {
-    div.innerHTML = '<img width="75%" height="400" src="' + link + '">';
+    div.innerHTML = '<img width="' + EMBEDWIDTH + '" height="' + EMBEDHEIGHT + '" onload="resizeImage(this)" src="' + link + '">';
+	div.innerHTML += '<p class="underembed">(<a href="' + link + '">' + link + '</a>)</p>';
   } else {
     if (link !== "")
       div.innerHTML = '<a href="' + link + '">' + link + '</a>';
@@ -156,8 +161,17 @@ function createDropdown(div,run) {
   // comment
   let p = document.createElement('p');
   p.className = "comment";
-  p.textContent = run.Comments;
+  if (run.Comments !== "") {
+	p.textContent = "Comments: " + run.Comments;
+  }
+  else {
+	p.textContent = "No comment";
+  }
   div.appendChild(p);
+}
+
+function resizeImage(img) {
+	if (img.naturalHeight < EMBEDHEIGHT) img.height = img.naturalHeight;
 }
 
 function embedCheck(runLink) {

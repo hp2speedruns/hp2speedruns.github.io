@@ -87,6 +87,11 @@ h2 {
   margin-top: 2em;
 }
 
+.underembed {
+	font-size: 0.75em;
+	margin: 0px;
+}
+
 button {
   color: inherit;
   font-family: inherit;
@@ -178,9 +183,6 @@ td {
 .comment {
   word-wrap: break-word;
   max-height: 30em;
-}
-
-p {
   margin: 0px;
 }
 
