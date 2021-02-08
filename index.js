@@ -131,7 +131,10 @@ function fetchCats(tries) {
   });
 }
 function fetchRuns(tries) {
-  fetch('https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/1/public/full?alt=json')
+	fetchLink = "https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/1/public/full?alt=json";
+	if (document.location.hash === "#test")
+		fetchLink = "https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/3/public/full?alt=json";
+  fetch(fetchLink)
       .then(res => res.json())
       .then(function(data) {
     runs = parseRuns(data);
