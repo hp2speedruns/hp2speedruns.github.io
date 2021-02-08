@@ -113,7 +113,13 @@ function fetchCats(tries) {
       .then(function(data) {
     parseCategories(data);
     makeTables();
-    switchTab(CATEGORIES[0]);
+	switchTab(CATEGORIES[0]);
+    if (document.location.hash !== "") {
+		let hashCat = document.location.hash.split("#")[1].replace(/%20/g," ");
+		if (CATEGORIES.indexOf(hashCat) != -1) {
+			switchTab(hashCat);
+		}
+	}
 
     fetchRuns(1);
   }).catch(function(error) {
@@ -210,6 +216,7 @@ function makeTables() {
     btn.textContent = category;
     btn.onclick = function() {
       switchTab(category);
+	  window.location.href="#" + category;
     };
     buttonDiv.appendChild(btn);
 
