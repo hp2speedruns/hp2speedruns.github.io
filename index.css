@@ -170,7 +170,7 @@ td {
 
 .comment {
   word-wrap: break-word;
-  max-height: 50em;
+  max-height: 30em;
 }
 
 .place1 { color:#ffff99; }

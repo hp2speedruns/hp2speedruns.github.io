@@ -74,7 +74,7 @@ class CategoryObject {
 
         //we don't want the newly slid out thing to be off the bottom of the screen
         div.ontransitionend = function() {
-        let bottompx = div.getBoundingClientRect().top + div.scrollHeight;
+        let bottompx = div.getBoundingClientRect().top + div.clientHeight;
         if (bottompx > window.innerHeight)
           window.scrollBy({
             top: bottompx-window.innerHeight+25,
