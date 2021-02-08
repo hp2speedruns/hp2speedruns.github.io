@@ -1,8 +1,9 @@
 //regex for manual time entry: ^(([0-9]?[0-9]):)?([0-5]?[0-9]):([0-5]?[0-9])(.[0-9]?[0-9]?[0-9])?$
 //regex for video link (turns out there's a data validation for links): ^.*[a-zA-Z0-9]\.[a-zA-Z].*$
 
-var CATEGORIES = [];
-var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "Proof", "Verified"];
+var CATEGORIES = []; //gets the category list from sheet 2 of the spreadsheet
+var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "Proof", "Verified"]; //keep this hardcoded
+var categoryObjs = new Map();
 var runs;
 
 class CategoryObject {
@@ -99,9 +100,6 @@ class CategoryObject {
   }
 }
 
-var categoryObjs = new Map();
-
-// check the JSON out in console to learn its structure
 window.onload = function() {
   fetchCats(1);
 }
@@ -150,7 +148,7 @@ function createDropdown(div,run) {
     div.innerHTML = '<img width="75%" height="400" src="' + link + '">';
   } else {
     if (link !== "")
-      div.innerHTML = link;
+      div.innerHTML = '<a href="' + link + '">' + link + '</a>';
     else
       div.textContent = "No proof";
   }

@@ -121,7 +121,7 @@ img {
   padding: 0.25em;
 
   position: absolute;
-  right: 10px;
+  right: 15px;
 }
 
 .submit:hover {
@@ -168,27 +168,36 @@ td {
   text-overflow: ellipsis;
 }
 
+.content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: var(--base-color);
+}
+
 .comment {
   word-wrap: break-word;
   max-height: 30em;
+}
+
+p {
+  margin: 0px;
 }
 
 .place1 { color:#ffff99; }
 .place2 { color:#cccccc; }
 .place3 { color:#ffb366; }
 
+tr:nth-child(1) {
+  background-color: var(--table-header-color);
+}
+
 tr:nth-child(4n+4) {
-  /* this is intentional: there's an off-by-one caused by the header */
   background-color: var(--table-even-color);
 }
 
 tr:nth-child(4n+2) {
-  /* this is intentional: there's an off-by-one caused by the header */
   background-color: var(--table-odd-color);
-}
-
-tr:nth-child(1) {
-  background-color: var(--table-header-color);
 }
 
 tr:nth-child(2n+2):hover {
@@ -196,17 +205,7 @@ tr:nth-child(2n+2):hover {
   cursor: pointer;
 }
 
-.content {
-  padding: 0 18px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-  background-color: var(--base-color);
-}
-
 .divtr {
-  max-height: 0;
-  transition: max-height 0.2s ease-out;
   padding: 0px;
   margin: 0px;
   height: 0%;
