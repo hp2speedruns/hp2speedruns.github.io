@@ -188,8 +188,15 @@ function embedCheck(runLink) {
   let ytAttempt = runLink.split("youtu.be/");
   if (ytAttempt.length == 1) ytAttempt = runLink.split("watch?v=");
   if (ytAttempt.length > 1) {
-    //extra variables after the ID seem to be fine
-    return ("https://www.youtube.com/embed/" + ytAttempt[1]);
+    //extra variables after the ID seem to be fine, but we need to replace the & with a ?, and t=#s with start=#
+	//so glad youtube isn't consistent at all with its timecodes
+	IDandVars = ytAttempt[1].split(/[\?|&]/g);
+	finalString = IDandVars[0] + "?";
+	for (i = 1; i < IDandVars.length; i++) {
+		finalString += IDandVars[i] + "&";
+	}
+	finalString = finalString.replace(/([\?|&])t=([0-9]+)s/g,"$1start=$2")
+    return ("https://www.youtube.com/embed/" + finalString);
   }
 
   //test for google drive
