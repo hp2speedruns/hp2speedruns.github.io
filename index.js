@@ -2,7 +2,7 @@
 //regex for video link (turns out there's a data validation for links): ^.*[a-zA-Z0-9]\.[a-zA-Z].*$
 
 var CATEGORIES = []; //gets the category list from sheet 2 of the spreadsheet
-var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "Proof", "Verified"]; //keep this hardcoded
+var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "Proof"]; //keep this hardcoded
 var categoryObjs = new Map();
 var runs;
 
