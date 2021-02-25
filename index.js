@@ -162,9 +162,9 @@ function createDropdown(div,run) {
 	div.innerHTML += '<p class="underembed">(<a href="' + link + '">' + link + '</a>)</p>';
   } else {
     if (link !== "")
-      div.innerHTML = '<a href="' + link + '">' + link + '</a>';
+      div.innerHTML = '<br><a href="' + link + '">' + link + '</a>';
     else
-      div.textContent = "No proof";
+      div.innerHTML = "<br>No proof";
   }
 
   // comment
