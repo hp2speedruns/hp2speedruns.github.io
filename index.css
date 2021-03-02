@@ -134,6 +134,21 @@ img {
   background-color: var(--button-hover);
 }
 
+.rules {
+  font-size: 1.2em;
+  border-radius: 8px;
+  background-color: var(--button-unselected);
+  padding: 0.25em;
+
+  position: absolute;
+  left: 15px;
+}
+
+.rules:hover {
+  cursor: pointer;
+  background-color: var(--button-hover);
+}
+
 .button-selected {
   background-color: var(--button-selected);
 }
@@ -194,19 +209,19 @@ td {
 .place3 { color:#ffb366; }
 .place69 { color:#e293e5; }
 
-tr:nth-child(1) {
+tr:nth-child(2) {
   background-color: var(--table-header-color);
 }
 
-tr:nth-child(4n+4) {
+tr:nth-child(4n+5) {
   background-color: var(--table-even-color);
 }
 
-tr:nth-child(4n+2) {
+tr:nth-child(4n+3) {
   background-color: var(--table-odd-color);
 }
 
-tr:nth-child(2n+2):hover {
+tr:nth-child(2n+3):hover {
   background-color: var(--table-hover-color);
   cursor: pointer;
 }
@@ -215,4 +230,16 @@ tr:nth-child(2n+2):hover {
   padding: 0px;
   margin: 0px;
   height: 0%;
+}
+
+.rulesdiv {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.rulestr {
+  padding: 0px;
+  margin: 1px;
+  height: 100%;
 }

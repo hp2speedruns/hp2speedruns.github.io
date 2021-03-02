@@ -2,6 +2,9 @@
 //regex for video link (turns out there's a data validation for links): ^.*[a-zA-Z0-9]\.[a-zA-Z].*$
 
 var CATEGORIES = []; //gets the category list from sheet 2 of the spreadsheet
+var SHOWGLOBAL = [];
+var CATEGORYRULES = [];
+var GLOBALRULES = "";
 var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "Proof"]; //keep this hardcoded
 var categoryObjs = new Map();
 var runs;
@@ -131,7 +134,7 @@ function fetchCats(tries) {
   });
 }
 function fetchRuns(tries) {
-	fetchLink = "https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/1/public/full?alt=json";
+	fetchLink = "https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/4/public/full?alt=json";
 	if (document.location.hash === "#test")
 		fetchLink = "https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/3/public/full?alt=json";
   fetch(fetchLink)
@@ -139,7 +142,8 @@ function fetchRuns(tries) {
       .then(function(data) {
     runs = parseRuns(data);
     // sort all runs of all categories by Time, we worry about filtering by category later
-    runs = runs.sort(sortRuns);
+	// no longer necessary, Sheet #4 is pre-sorted
+    //runs = runs.sort(sortRuns);
     populateTables(runs);
   }).catch(function(error) {
     console.log("refetching runs");
@@ -251,6 +255,27 @@ function makeTables() {
     };
     div.appendChild(submitButton);
 
+	// category rules button
+	let divrules = document.createElement('div');
+    divrules.className = "rulesdiv";
+	if (SHOWGLOBAL[category] == "yes")
+		divrules.innerHTML = GLOBALRULES + "<br>" + CATEGORYRULES[category];
+	else
+		divrules.innerHTML = CATEGORYRULES[category];
+	let rulesButton = document.createElement('button');
+    rulesButton.className = 'rules';
+    rulesButton.textContent = "Rules";
+    rulesButton.onclick = function() {
+    if (divrules.style.maxHeight){
+        //slide back up
+        divrules.style.maxHeight = null;
+      } else {
+        //slide it out
+        divrules.style.maxHeight = divrules.scrollHeight + "px";
+      }
+    };
+    div.appendChild(rulesButton);
+
     // category name
     let catName = document.createElement('h2');
     catName.textContent = category;
@@ -259,6 +284,14 @@ function makeTables() {
     // table and header row
     let tbl = document.createElement('table');
     div.appendChild(tbl);
+
+	//dropdown collapsible content. put it in its own tr/td
+    let divtr = tbl.insertRow();
+    divtr.className = "rulestr";
+    let divtd = divtr.insertCell();
+    divtd.className = "rulestr";
+    divtd.colSpan = "999";
+	divtd.appendChild(divrules);
 
     let tr = tbl.insertRow();
     for (let field of FIELDSTODISPLAY) {
@@ -276,7 +309,18 @@ function makeTables() {
 function parseCategories(data) {
   let entries = data.feed.entry;
   for (let entry of entries) {
-    CATEGORIES.push(entry.gs$cell.inputValue);
+	if (entry.gs$cell.row == 1) {
+		if (entry.gs$cell.col == 1) GLOBALRULES = entry.gs$cell.inputValue;
+	}
+    else if (entry.gs$cell.col == 1) {
+		CATEGORIES.push(entry.gs$cell.inputValue);
+	}
+	else if (entry.gs$cell.col == 2) {
+		SHOWGLOBAL[CATEGORIES[CATEGORIES.length-1]] = entry.gs$cell.inputValue;
+	}
+	else if (entry.gs$cell.col == 3) {
+		CATEGORYRULES[CATEGORIES[CATEGORIES.length-1]] = entry.gs$cell.inputValue;
+	}
   }
 }
 
