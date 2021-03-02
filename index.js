@@ -1,6 +1,11 @@
 //regex for manual time entry: ^(([0-9]?[0-9]):)?([0-5]?[0-9]):([0-5]?[0-9])(.[0-9]?[0-9]?[0-9])?$
 //regex for video link (turns out there's a data validation for links): ^.*[a-zA-Z0-9]\.[a-zA-Z].*$
 
+//string.autoLink
+//https://github.com/bryanwoods/autolink-js/blob/master/autolink.js
+(function(){var k=[].slice;String.prototype.autoLink=function(){var d,b,g,a,e,f,h;e=1<=arguments.length?k.call(arguments,0):[];f=/(^|[\s\n]|<[A-Za-z]*\/?>)((?:https?|ftp):\/\/[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi;if(!(0<e.length))return this.replace(f,"$1<a href='$2'>$2</a>");a=e[0];d=a.callback;g=function(){var c;c=[];for(b in a)h=a[b],"callback"!==b&&c.push(" "+b+"='"+h+"'");return c}().join("");return this.replace(f,function(c,b,a){c=("function"===typeof d?d(a):
+void 0)||"<a href='"+a+"'"+g+">"+a+"</a>";return""+b+c})}}).call(this);
+
 var CATEGORIES = []; //gets the category list from sheet 2 of the spreadsheet
 var SHOWGLOBAL = [];
 var CATEGORYRULES = [];
@@ -176,6 +181,8 @@ function createDropdown(div,run) {
   p.className = "comment";
   if (run.Comments !== "") {
 	p.textContent = "Comments: " + run.Comments;
+	console.log(p.textContent);
+	p.innerHTML = p.innerHTML.autoLink();
   }
   else {
 	p.textContent = "No comment";
@@ -258,13 +265,18 @@ function makeTables() {
 	// category rules button
 	let divrules = document.createElement('div');
     divrules.className = "rulesdiv";
-	if (SHOWGLOBAL[category] == "yes")
-		divrules.innerHTML = GLOBALRULES + "<br>" + CATEGORYRULES[category];
-	else
-		divrules.innerHTML = CATEGORYRULES[category];
+	if (SHOWGLOBAL[category] == "yes") {
+		divrules.textContent = GLOBALRULES + "\n" + CATEGORYRULES[category];
+	}
+	else {
+		divrules.textContent = CATEGORYRULES[category];
+	}
+	console.log(divrules.textContent);
+	divrules.innerHTML = divrules.innerHTML.autoLink();
+	
 	let rulesButton = document.createElement('button');
     rulesButton.className = 'rules';
-    rulesButton.textContent = "Rules";
+    rulesButton.textContent = "Category Rules";
     rulesButton.onclick = function() {
     if (divrules.style.maxHeight){
         //slide back up
