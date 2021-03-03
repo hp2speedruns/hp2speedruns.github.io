@@ -135,7 +135,7 @@ function getSrcom(url) {
 		  
 		  for (let run of data.data) {
 			  if (run.status.status == "verified") {
-				  var newrun = [];
+				  var newrun = {};
 				  var categorystring = srcomcats[run.category];
 				  for (const [key, value] of Object.entries(run.values)) {
 					categorystring += " " + srcomvars[value];
@@ -150,7 +150,7 @@ function getSrcom(url) {
 				  newrun["Timenum"] = (run.times.primary_t / (3600*24));
 				  if (run.videos != null && run.videos.links != null) {
 					  newrun["Proof"] = "Yes";
-					  newrun["Proof link"] = run.videos.links[0];
+					  newrun["Proof link"] = run.videos.links[run.videos.links.length-1].uri;
 				  }
 				  else {
 					  newrun["Proof"] = "No";
