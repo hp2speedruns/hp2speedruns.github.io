@@ -88,11 +88,13 @@ var girlsByName = "";
 
 function newRoute(contents) {
     contents = contents.replace(/\[/g, "<b>[");
-		contents = contents.replace(/\]/g, "]</b>");
-		routeText = contents
-		lines = routeText.split('\n');
-		currentPlace = 0;
-		telepromptCreate()
+	contents = contents.replace(/\]/g, "]</b>");
+	contents = contents.replace(/\(/g, "<b>(");
+	contents = contents.replace(/\)/g, ")</b>");
+	routeText = contents
+	lines = routeText.split('\n');
+	currentPlace = 0;
+	telepromptCreate()
 }
 
 function telepromptCreate(){
