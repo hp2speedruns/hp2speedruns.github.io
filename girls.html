@@ -69,7 +69,7 @@ if (window.XMLHttpRequest) {
 }
 
 xhr.onreadystatechange = function(){ girlsByID = xhr.responseText;};
-xhr.open("GET","./res/girlsdata.txt"); //assuming kgr.bss is plaintext
+xhr.open("GET","./res/girlsdata.txt");
 xhr.send();
 
 var xhr2;
@@ -80,13 +80,14 @@ if (window.XMLHttpRequest) {
 }
 
 xhr2.onreadystatechange = function(){girlsByName = xhr2.responseText; newRoute(girlsByName);};
-xhr2.open("GET","./res/girlsdataalphabetical.txt"); //assuming kgr.bss is plaintext
+xhr2.open("GET","./res/girlsdataalphabetical.txt");
 xhr2.send();
 
 var girlsByID = "";
 var girlsByName = "";
 
 function newRoute(contents) {
+	//this could easily be one regex
     contents = contents.replace(/\[/g, "<b>[");
 	contents = contents.replace(/\]/g, "]</b>");
 	contents = contents.replace(/\(/g, "<b>(");
@@ -152,11 +153,6 @@ var tbl;
 
 $(document).keydown(function(e) {
     switch(e.which) {
-		case 32: //spacebar
-		currentPlace++;
-		telepromptCreate();
-		break;
-		
         case 37: // left
 		currentPlace = currentPlace - 1;
 		if (currentPlace < 0) currentPlace = 0;
@@ -165,7 +161,8 @@ $(document).keydown(function(e) {
 
         case 38: // up
         break;
-
+		
+		case 32: //spacebar
         case 39: // right
 		currentPlace++;
 		telepromptCreate();
@@ -174,11 +171,6 @@ $(document).keydown(function(e) {
         case 40: // down
         break;
 		
-		case 82: //R for reset
-		currentPlace = 0;
-		telepromptCreate();
-		break;
-
         default: return; // exit this handler for other keys
     }
     e.preventDefault(); // prevent the default action (scroll / move caret)
