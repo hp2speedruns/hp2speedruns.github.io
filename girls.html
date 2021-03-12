@@ -53,7 +53,7 @@ table {
 </head>
 
 <body>
-
+<input type="checkbox" id="myCheck2" onclick="myFunction2() checked"> Alphabetical
 <input type="checkbox" id="myCheck" onclick="myFunction()"> Center
 
 <script>
@@ -67,9 +67,23 @@ if (window.XMLHttpRequest) {
     xhr = new ActiveXObject("Microsoft.XMLHTTP");
 }
 
-xhr.onreadystatechange = function(){newRoute(xhr.responseText);};
+xhr.onreadystatechange = function(){ girlsByID = xhr.responseText;};
 xhr.open("GET","./res/girlsdata.txt"); //assuming kgr.bss is plaintext
 xhr.send();
+
+var xhr2;
+if (window.XMLHttpRequest) {
+    xhr2 = new XMLHttpRequest();
+} else if (window.ActiveXObject) {
+    xhr2 = new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+xhr2.onreadystatechange = function(){girlsByName = xhr.responseText; newRoute(xhr.responseText);};
+xhr2.open("GET","./res/girlsdataalphabetical.txt"); //assuming kgr.bss is plaintext
+xhr2.send();
+
+var girlsByID = "";
+var girlsByName = "";
 
 function newRoute(contents) {
     contents = contents.replace(/\[/g, "<b>[");
@@ -116,6 +130,14 @@ function telepromptCreate(){
 function myFunction() {
   centerText = !centerText;
   telepromptCreate();
+}
+
+function myFunction2() {
+	if (document.getElementById("myCheck2").checked == true) {
+		newRoute(girlsByName);
+	}
+	else newRoute(girlsByID);
+	telepromptCreate();
 }
 
 var centerText = false
