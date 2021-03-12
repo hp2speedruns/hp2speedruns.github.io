@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Girls Data Teleprompter</title>
+<script src="./res/jquery.js"></script>
+
+<style>
+
+td {
+	line-height: 60%;
+}
+
+td.text {
+  line-height: 100%;
+}
+
+img {
+  image-rendering: pixelated;
+}
+
+img.blur {
+  image-rendering: auto;
+}
+
+table {
+	float:left;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 2%;
+    transform: translateX(-1%) translateY(-50%);
+}
+
+.overlay {
+
+    position: absolute;
+  background-color: #008CBA;
+  width: 65px;
+  height: 48px;
+    display: none; /* Hidden by default */
+    
+    background-color: rgba(0,150,0,0.66); /* Black background with opacity */
+    z-index: 5; /* Specify a stack order in case you're using a different order for other elements */
+}
+
+</style>
+
+<script>
+
+</script>
+</head>
+
+<body>
+
+<input type="checkbox" id="myCheck" onclick="myFunction()"> Center
+
+<script>
+//I should say that quite a bit of code in this is not mine, and just stolen from stackexchange posts and stuff (such as reading arrow key input and creating the table in javascript)
+//but most of it IS mine, of course...
+
+var xhr;
+if (window.XMLHttpRequest) {
+    xhr = new XMLHttpRequest();
+} else if (window.ActiveXObject) {
+    xhr = new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+xhr.onreadystatechange = function(){newRoute(xhr.responseText);};
+xhr.open("GET","./res/girlsdata.txt"); //assuming kgr.bss is plaintext
+xhr.send();
+
+function newRoute(contents) {
+    contents = contents.replace(/\[/g, "<b>[");
+		contents = contents.replace(/\]/g, "]</b>");
+		routeText = contents
+		lines = routeText.split('\n');
+		currentPlace = 0;
+		telepromptCreate()
+}
+
+function telepromptCreate(){
+	$(document).ready(function() {
+  		$(tbl).remove();
+	});
+	var body = document.body;
+        tbl2  = document.createElement('table');
+		tbl  = document.createElement('div');
+		tbl2.appendChild(tbl);
+    //tbl.style.width  = '800px';
+    tbl.style.border = '0px solid black';
+	tbl.classList.add('container');
+	
+	if (centerText) tbl.style.textAlign = "center";
+	tbl.style.fontSize = "large";
+	//tbl.style.fontWeight = "bold";
+	tbl.style.fontFamily = "Arial,Verdana";
+	body.appendChild(tbl2);
+	
+	var blanksFound = 0
+	
+	for(var line = 0; line < lines.length; line++){
+		if (lines[line].length === 1) {
+			blanksFound++;
+		}
+		else if (blanksFound == currentPlace) {
+		tbl.innerHTML += lines[line];
+		tbl.innerHTML += "<br>";
+		}
+		
+	}
+	
+}
+
+function myFunction() {
+  centerText = !centerText;
+  telepromptCreate();
+}
+
+var centerText = false
+
+var routeText = "";
+var lines;
+var currentPlace = 0;
+var tbl;
+
+$(document).keydown(function(e) {
+    switch(e.which) {
+		case 32: //spacebar
+		currentPlace++;
+		telepromptCreate();
+		break;
+		
+        case 37: // left
+		currentPlace = currentPlace - 1;
+		if (currentPlace < 0) currentPlace = 0;
+		telepromptCreate();
+        break;
+
+        case 38: // up
+        break;
+
+        case 39: // right
+		currentPlace++;
+		telepromptCreate();
+        break;
+
+        case 40: // down
+        break;
+		
+		case 82: //R for reset
+		currentPlace = 0;
+		telepromptCreate();
+		break;
+
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+});
+
+
+</script>
+
+</body>
+</html>
