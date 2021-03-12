@@ -79,7 +79,7 @@ if (window.XMLHttpRequest) {
     xhr2 = new ActiveXObject("Microsoft.XMLHTTP");
 }
 
-xhr2.onreadystatechange = function(){girlsByName = xhr.responseText; newRoute(xhr.responseText);};
+xhr2.onreadystatechange = function(){girlsByName = xhr2.responseText; newRoute(girlsByName);};
 xhr2.open("GET","./res/girlsdataalphabetical.txt"); //assuming kgr.bss is plaintext
 xhr2.send();
 
