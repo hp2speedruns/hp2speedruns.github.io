@@ -128,7 +128,10 @@ function telepromptCreate(){
 		}
 		
 	}
-	
+	if (tbl.innerHTML === "") {
+		currentPlace--;
+		telepromptCreate();
+	}
 }
 
 function myFunction() {
@@ -151,12 +154,20 @@ var lines;
 var currentPlace = 0;
 var tbl;
 
+function decrease() {
+	currentPlace = currentPlace - 1;
+	if (currentPlace < 0) currentPlace = 0;
+	telepromptCreate();
+}
+function increase() {
+	currentPlace++;
+	telepromptCreate();
+}
+
 $(document).keydown(function(e) {
     switch(e.which) {
         case 37: // left
-		currentPlace = currentPlace - 1;
-		if (currentPlace < 0) currentPlace = 0;
-		telepromptCreate();
+		decrease();
         break;
 
         case 38: // up
@@ -164,8 +175,7 @@ $(document).keydown(function(e) {
 		
 		case 32: //spacebar
         case 39: // right
-		currentPlace++;
-		telepromptCreate();
+		increase();
         break;
 
         case 40: // down
@@ -176,6 +186,10 @@ $(document).keydown(function(e) {
     e.preventDefault(); // prevent the default action (scroll / move caret)
 });
 
+window.addEventListener("wheel", function(e) {
+	if (e.deltaY > 0) increase();
+	else decrease();
+});
 
 </script>
 
