@@ -124,13 +124,13 @@ function telepromptCreate(){
 			blanksFound++;
 		}
 		else if (blanksFound == currentPlace) {
-		if (lines[line] != "") textFound = true;
+		textFound = true;
 		tbl.innerHTML += lines[line];
 		tbl.innerHTML += "<br>";
 		}
 		
 	}
-	if (textFound == false) {
+	if (textFound == false && lines.length > 0) {
 		decrease();
 	}
 }
