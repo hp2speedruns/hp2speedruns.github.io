@@ -85,6 +85,7 @@ xhr2.send();
 
 var girlsByID = "";
 var girlsByName = "";
+var maxPlace = 0;
 
 function newRoute(contents) {
 	//this could easily be one regex
@@ -95,6 +96,12 @@ function newRoute(contents) {
 	routeText = contents
 	lines = routeText.split('\n');
 	currentPlace = 0;
+	maxPlace = 0;
+	for(var line = 0; line < lines.length; line++){
+		if (lines[line].length <= 1) {
+			maxPlace++;
+		}
+	}
 	telepromptCreate()
 }
 
@@ -157,6 +164,7 @@ function decrease() {
 }
 function increase() {
 	currentPlace++;
+	if (currentPlace > maxPlace) currentPlace = maxPlace;
 	telepromptCreate();
 }
 
