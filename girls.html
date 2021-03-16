@@ -128,7 +128,8 @@ function telepromptCreate(){
 		}
 		
 	}
-	if (tbl.innerHTML === "") {
+	if (tbl.innerHTML == "") {
+		console.log("reducing current place");
 		currentPlace--;
 		telepromptCreate();
 	}
@@ -188,7 +189,7 @@ $(document).keydown(function(e) {
 
 window.addEventListener("wheel", function(e) {
 	if (e.deltaY > 0) increase();
-	else decrease();
+	else if (e.deltaY < 0) decrease();
 });
 
 </script>
