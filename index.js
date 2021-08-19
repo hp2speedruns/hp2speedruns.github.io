@@ -116,7 +116,7 @@ window.onload = function() {
 }
 
 function fetchCats(tries) {
-	fetch('http://docs.google.com/spreadsheets/d/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/gviz/tq?tqx=out:json')
+	fetch('https://docs.google.com/spreadsheets/d/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/gviz/tq?tqx=out:json')
     .then(res => res.text())
     .then(text => {
 		console.log(text);
