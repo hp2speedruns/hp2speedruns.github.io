@@ -116,32 +116,22 @@ window.onload = function() {
 }
 
 function fetchCats(tries) {
-	fetch('https://docs.google.com/spreadsheets/d/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/gviz/tq?tqx=out:json')
+	fetch('https://docs.google.com/spreadsheets/d/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/gviz/tq?tqx=out:json&tq&gid=871476919')
     .then(res => res.text())
     .then(text => {
-		console.log(text);
-        const json = JSON.parse(text.substr(47).slice(0, -2))
-		console.log(json);
-		console.log("uh");
-   /* })
-	
-  fetch('https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/2/public/full?alt=json')
-      .then(res => res.json())
-      .then(function(data) {
-    parseCategories(data);
-    makeTables();
-	switchTab(CATEGORIES[0]);
-    if (document.location.hash !== "") {
-		let hashCat = document.location.hash.split("#")[1].replace(/%20/g," ");
-		if (CATEGORIES.indexOf(hashCat) != -1) {
-			switchTab(hashCat);
+        const data = JSON.parse(text.substr(47).slice(0, -2))
+		console.log(data)
+		parseCategories(data);
+		makeTables();
+		switchTab(CATEGORIES[0]);
+		if (document.location.hash !== "") {
+			let hashCat = document.location.hash.split("#")[1].replace(/%20/g," ");
+			if (CATEGORIES.indexOf(hashCat) != -1) {
+				switchTab(hashCat);
+			}
 		}
-	}
-
-    fetchRuns(1);*/
   }).catch(function(error) {
     console.log("refetching cats");
-	console.log(error);
     if (tries < 10)
       fetchCats(tries+1);
     else
@@ -149,13 +139,15 @@ function fetchCats(tries) {
   });
 }
 function fetchRuns(tries) {
-	fetchLink = "https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/4/public/full?alt=json";
+	fetchLink = "https://docs.google.com/spreadsheets/d/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/gviz/tq?tqx=out:json&tq&gid=1150572864";
 	if (document.location.hash === "#test")
-		fetchLink = "https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/3/public/full?alt=json";
+		fetchLink = "https://docs.google.com/spreadsheets/d/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/gviz/tq?tqx=out:json&tq&gid=360137242";
   fetch(fetchLink)
-      .then(res => res.json())
-      .then(function(data) {
-    runs = parseRuns(data);
+      .then(res => res.text())
+    .then(text => {
+        const data = JSON.parse(text.substr(47).slice(0, -2))
+		console.log(data)
+		runs = parseRuns(data);
     // sort all runs of all categories by Time, we worry about filtering by category later
 	// no longer necessary, Sheet #4 is pre-sorted
     //runs = runs.sort(sortRuns);
