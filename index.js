@@ -384,12 +384,13 @@ function parseRuns(data) {
 	
 	for (let j = 0; j < entry.length; j++) {
 		if (entry[j].f != undefined) {
-			runs[i][j] = entry[j].f
+			runs[i][fields[j]] = entry[j].f
 		}
 		else if (entry[j].v != undefined) {
-			runs[i][j] = entry[j].v
+			runs[i][fields[j]] = entry[j].v
 		}
 	}
+	console.log(runs[i])
   }
   console.log(runs);
   return runs;
