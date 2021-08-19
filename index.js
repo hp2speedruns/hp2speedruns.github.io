@@ -363,11 +363,8 @@ Post-game outfits are cheaper on higher difficulties, but with this glitch (and 
 function parseRuns(data) {
 	console.log("hi");
 	console.log(data);
-  let entries = data.feed.entry;
   let fields = [];
   let runs = [];
-
-  let currentRow = 0;
   
   for (let i = 0; i < data.table.cols.length; i++) {
 	fields[i] = data.table.cols[i].label;
