@@ -119,7 +119,7 @@ function fetchCats(tries) {
 	fetch('https://docs.google.com/spreadsheets/d/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/gviz/tq?tqx=out:json&tq&gid=871476919')
     .then(res => res.text())
     .then(text => {
-		fetchRuns(1);
+		fetchRuns(10);
 		console.log(text)
         const data = JSON.parse(text.substr(47).slice(0, -2))
 		console.log(data)
