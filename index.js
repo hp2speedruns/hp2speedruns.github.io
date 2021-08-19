@@ -151,11 +151,11 @@ function fetchRuns(tries) {
 		console.log(text)
         const data = JSON.parse(text.substr(47).slice(0, -2))
 		console.log(data)
-		//runs = parseRuns(data);
+		runs = parseRuns(data);
     // sort all runs of all categories by Time, we worry about filtering by category later
 	// no longer necessary, Sheet #4 is pre-sorted
     //runs = runs.sort(sortRuns);
-    //populateTables(runs);
+    populateTables(runs);
   }).catch(function(error) {
     console.log("refetching runs");
     if (tries < 10)
