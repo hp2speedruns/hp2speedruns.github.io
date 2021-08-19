@@ -119,7 +119,7 @@ function fetchCats(tries) {
 	fetch('https://docs.google.com/spreadsheets/d/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/gviz/tq?tqx=out:json&tq&gid=871476919')
     .then(res => res.text())
     .then(text => {
-		fetchRuns(10);
+		//fetchRuns(10);
 		console.log(text)
         const data = JSON.parse(text.substr(47).slice(0, -2))
 		console.log(data)
@@ -324,7 +324,30 @@ function makeTables() {
 }
 
 function parseCategories(data) {
-  let entries = data.feed.entry;
+	//FUCK YOU GOOGLE SHEETS
+	GLOBALRULES =
+"Timing is from pressing the Start New Game button to the affection meter showing max in the final Bonus Round (or final item being given/unlocked).\
+The speedrun mod has a built-in timer as well as many quality-of-life improvements:\
+https://drive.google.com/u/0/uc?id=110dLsFRVXVr2I-jV3s6TDuJVfcKUjE1o&export=download"
+	
+	hardcodecategories = 		[ "1 Wing", "6 Wings", "12 Wings", "24 Wings", "48 Shoes", "100%" ];
+	hardcodeshowglobalrules = 	[ "yes", "yes", "yes", "yes", "yes", "yes" ];
+	hardcoderules = 			[ 
+"Route: https://pastebin.com/4bUPJTtG",
+"Route: https://pastebin.com/kRSZh8Yu",
+"Route: None yet, I would just start with 6 Wings and go from there",
+"(Obviously, defeating the Nymphojinn is required, not just 24 Wings.)\
+Route: idk",
+"Route: Never do dates, just initiate and forfeit them. Get fruits by talking. Give shoe",
+"This category is fastest on 1.0.2 due to allowing post-game outfits to be unlocked by wearing the hairstyle to dates: https://drive.google.com/file/d/1sUjR-nekTAbHjXVPoFJReaiDRQNYvRMu/view\
+Post-game outfits are cheaper on higher difficulties, but with this glitch (and having to complete Nonstop rounds to unlock the outfits, earning fruits along the way), it's likely fastest on Easy" ]
+	for (let i = 0; i < hardcodecategories.length; i++) {
+		CATEGORIES.push(hardcodecategories[i])
+		SHOWGLOBAL[CATEGORIES[CATEGORIES.length-1]] = hardcodeshowglobalrules[i]
+		CATEGORYRULES[CATEGORIES[CATEGORIES.length-1]] = hardcoderules[i]
+	}
+	console.log(CATEGORIES);
+  /*let entries = data.feed.entry;
   for (let entry of entries) {
 	if (entry.gs$cell.row == 1) {
 		if (entry.gs$cell.col == 1) GLOBALRULES = entry.gs$cell.inputValue;
@@ -338,7 +361,7 @@ function parseCategories(data) {
 	else if (entry.gs$cell.col == 3) {
 		CATEGORYRULES[CATEGORIES[CATEGORIES.length-1]] = entry.gs$cell.inputValue;
 	}
-  }
+  }*/
 }
 
 function parseRuns(data) {
@@ -347,34 +370,28 @@ function parseRuns(data) {
   let runs = [];
 
   let currentRow = 0;
-  for (let entry of entries) {
-    // fill out the fields array from row 1 of the sheet
-    if (entry.gs$cell.row == 1) {
-      fields[entry.gs$cell.col] = entry.gs$cell.inputValue;
-      continue;
-    }
-
-    // short names
-    row = entry.gs$cell.row;
-    col = entry.gs$cell.col;
-    input = entry.gs$cell.inputValue;
-    num = entry.gs$cell.numericValue;
-
-    // new row = new run
-    if (row != currentRow) {
-      currentRow = row;
-      runs[row-2] = {};
-      for (let field of fields) {
+  
+  for (let i = 0; i < data.table.cols.length; i++) {
+	fields[i] = data.table.cols[i].label;
+  }
+  
+  for (let i = 0; i < data.table.rows.length; i++) {
+	runs[i] = {}
+	for (let field of fields) {
         // prefill all the fields, because some are optional but shouldn't be undefined
-        if (field != undefined) runs[row-2][field] = "";
-      }
+        if (field != undefined) runs[i][field] = "";
     }
-
-    runs[row-2][fields[col]] = input;
-    // Times and dates have a raw decimal number form, which is extremely convenient for sorting
-    if (num != undefined) {
-      runs[row-2][(fields[col]+"num")] = num;
-    }
+	
+	entry = data.table.rows[i].c
+	
+	for (let j = 0; j < entry.length; j++) {
+		if (entry[j].f != undefined) {
+			runs[i][j] = entry[j].f
+		}
+		else {
+			runs[i][j] = entry[j].v
+		}
+	}
   }
   return runs;
 }
