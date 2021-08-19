@@ -383,11 +383,13 @@ function parseRuns(data) {
 	entry = data.table.rows[i].c
 	
 	for (let j = 0; j < entry.length; j++) {
-		if (entry[j].f != undefined) {
-			runs[i][fields[j]] = entry[j].f
-		}
-		else if (entry[j].v != undefined) {
-			runs[i][fields[j]] = entry[j].v
+		if (entry[j] != undefined) {
+			if (entry[j].f != undefined) {
+				runs[i][fields[j]] = entry[j].f
+			}
+			else if (entry[j].v != undefined) {
+				runs[i][fields[j]] = entry[j].v
+			}
 		}
 	}
 	console.log(runs[i])
