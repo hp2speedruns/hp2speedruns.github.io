@@ -132,6 +132,7 @@ function fetchCats(tries) {
 				switchTab(hashCat);
 			}
 		}
+		fetchRuns(1);
   }).catch(function(error) {
     console.log("refetching cats");
     if (tries < 10)
