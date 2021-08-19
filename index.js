@@ -116,7 +116,8 @@ window.onload = function() {
 }
 
 function fetchCats(tries) {
-	fetch('https://docs.google.com/spreadsheets/d/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/gviz/tq?tqx=out:json&tq&gid=871476919')
+	//we don't fetch the categories from google anymore
+	/*fetch('https://docs.google.com/spreadsheets/d/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/gviz/tq?tqx=out:json&tq&gid=871476919')
     .then(res => res.text())
     .then(text => {
 		//fetchRuns(10);
@@ -137,7 +138,17 @@ function fetchCats(tries) {
       fetchCats(tries+1);
     else
       document.getElementById("header-div").textContent = "Unable to retrieve the Google Sheets file";
-  });
+  });*/
+	parseCategories();
+	makeTables();
+	switchTab(CATEGORIES[0]);
+	if (document.location.hash !== "") {
+		let hashCat = document.location.hash.split("#")[1].replace(/%20/g," ");
+		if (CATEGORIES.indexOf(hashCat) != -1) {
+			switchTab(hashCat);
+		}
+	}
+	fetchRuns(1);
 }
 function fetchRuns(tries) {
 	fetchLink = "https://docs.google.com/spreadsheets/d/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/gviz/tq?tqx=out:json&tq&gid=1150572864";
@@ -319,7 +330,7 @@ function makeTables() {
   }
 }
 
-function parseCategories(data) {
+function parseCategories() {
 	//FUCK YOU GOOGLE SHEETS
 	GLOBALRULES =
 "Timing is from pressing the Start New Game button to the affection meter showing max in the final Bonus Round (or final item being given/unlocked).\n\
@@ -392,9 +403,7 @@ function parseRuns(data) {
 			}
 		}
 	}
-	console.log(runs[i])
   }
-  console.log(runs);
   return runs;
 }
 
@@ -437,7 +446,7 @@ function formatPlace(placeInt) {
 }
 
 function reformatTime2(t) {
-  return t.replace(/^0(0:0?)?/, '').replace(/\.000$/, '');
+  return t.replace(/^(0:0?)?/, '').replace(/\.000$/, '');
 }
 
 function sortRuns(a,b) {
