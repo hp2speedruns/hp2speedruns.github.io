@@ -366,6 +366,7 @@ Post-game outfits are cheaper on higher difficulties, but with this glitch (and 
 }
 
 function parseRuns(data) {
+	console.log("hi");
   let entries = data.feed.entry;
   let fields = [];
   let runs = [];
@@ -394,6 +395,7 @@ function parseRuns(data) {
 		}
 	}
   }
+  console.log(runs);
   return runs;
 }
 
