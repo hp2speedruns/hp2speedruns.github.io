@@ -386,7 +386,7 @@ function parseRuns(data) {
 		if (entry[j].f != undefined) {
 			runs[i][j] = entry[j].f
 		}
-		else {
+		else if (entry[j].v != undefined) {
 			runs[i][j] = entry[j].v
 		}
 	}
