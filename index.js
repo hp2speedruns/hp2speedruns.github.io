@@ -116,6 +116,15 @@ window.onload = function() {
 }
 
 function fetchCats(tries) {
+	fetch('http://docs.google.com/spreadsheets/d/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/gviz/tq?tqx=out:json')
+    .then(res => res.text())
+    .then(text => {
+		console.log(text);
+        const json = JSON.parse(text.substr(47).slice(0, -2))
+		console.log(json);
+		console.log("uh");
+   /* })
+	
   fetch('https://spreadsheets.google.com/feeds/cells/1kl9o-EDJ-9yUYhPAU8FjZ1SVGYb12CUqEHdngcg9Cw0/2/public/full?alt=json')
       .then(res => res.json())
       .then(function(data) {
@@ -129,9 +138,10 @@ function fetchCats(tries) {
 		}
 	}
 
-    fetchRuns(1);
+    fetchRuns(1);*/
   }).catch(function(error) {
     console.log("refetching cats");
+	console.log(error);
     if (tries < 10)
       fetchCats(tries+1);
     else
