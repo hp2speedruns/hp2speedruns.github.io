@@ -10,7 +10,7 @@ var CATEGORIES = []; //gets the category list from sheet 2 of the spreadsheet
 var SHOWGLOBAL = [];
 var CATEGORYRULES = [];
 var GLOBALRULES = "";
-var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "Proof"]; //keep this hardcoded
+var FIELDSTODISPLAY = ["Place", "Username", "Time", "Date", "QT"]; //keep this hardcoded
 var categoryObjs = new Map();
 var runs;
 
@@ -423,6 +423,10 @@ function formatRun(run, placeInt) {
     //theURL = new URL(run["Proof link"]);
     //run["Proof"] = theURL.hostname;
   }
+  if (run["QuickTransitions"] === "On")
+	  run.QT = "On";
+  else
+	  run.QT = "Off";
 
   // reformat the Time
   run.Time = reformatTime2(run.Time);
