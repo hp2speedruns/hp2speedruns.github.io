@@ -346,8 +346,7 @@ https://drive.google.com/u/0/uc?id=110dLsFRVXVr2I-jV3s6TDuJVfcKUjE1o&export=down
 "(Obviously, defeating the Nymphojinn is required, not just 24 Wings.)\n\
 Route: idk",
 "Route: Never do dates, just initiate and forfeit them. Get fruits by talking. Give shoe",
-"This category is fastest on 1.0.2 due to allowing post-game outfits to be unlocked by wearing the hairstyle to dates: https://drive.google.com/file/d/1sUjR-nekTAbHjXVPoFJReaiDRQNYvRMu/view\n\
-Post-game outfits are cheaper on higher difficulties, but with this glitch (and having to complete Nonstop rounds to unlock the outfits, earning fruits along the way), it's likely fastest on Easy" ]
+"100% requires maxing your stats and unlocking all outfits/hairstyles (including code outfits, due to a bug). Postgame outfits are cheaper on harder difficulties." ]
 	for (let i = 0; i < hardcodecategories.length; i++) {
 		CATEGORIES.push(hardcodecategories[i])
 		SHOWGLOBAL[CATEGORIES[CATEGORIES.length-1]] = hardcodeshowglobalrules[i]
@@ -423,7 +422,7 @@ function formatRun(run, placeInt) {
     //theURL = new URL(run["Proof link"]);
     //run["Proof"] = theURL.hostname;
   }
-  if (run["QuickTransitions"] === "On")
+  if (run["Quick Transitions"] === "On")
 	  run.QT = "On";
   else
 	  run.QT = "Off";
